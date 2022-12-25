@@ -3,5 +3,9 @@ export const paddle_default = {
     width:10,
     height:30,
     x:10,
-    y:10
+    y:10,
+    speed:15,
 }
+
+
+
