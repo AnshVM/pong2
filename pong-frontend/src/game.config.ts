@@ -1,10 +1,16 @@
 export const paddle_default = {
-    color:"white",
-    width:10,
-    height:30,
-    x:10,
-    y:10,
+    color:"#e1e3f5",
+    width:3,
+    height:70,
+    x:15,
+    y:30,
     speed:15,
+}
+
+export const ball_default = {
+    color:'#e1e3f5',
+    radius:8,
+    y:50, 
 }
 
 
