@@ -1,4 +1,4 @@
-import { ball_default, paddle_default } from "./game.config";
+import { ball_default, COLLISION_MARGIN, paddle_default } from "./game.config";
 
 const canvas: HTMLCanvasElement = document.getElementById('canvas') as HTMLCanvasElement;
 
@@ -124,6 +124,12 @@ const moveBall = (ctx: CanvasRenderingContext2D, ball: Ball, dx: number, dy: num
     ball.animId = undefined;
   }
   const moveBallAnim = () => {
+    if(ballCollidesPaddleRight(ball,paddleRight)){
+      console.log('Collided with right paddle');
+    }
+    if(ballCollidesPaddleLeft(ball,paddleLeft)){
+      console.log('Collided with left paddle');
+    }
     clearBall(ctx, { ...ball });
     ball.x = ball.x + dx;
     ball.y = ball.y + dy;
@@ -141,26 +147,15 @@ moveBall(ctx, ball, 3, 3)
 const prettyClose = (a: number, b: number, d: number) => a - b <= d && a - b >= -d
 
 const ballCollidesPaddleRight = (ball: Ball, paddleRight: Paddle) => {
-  // if(prettyClose(ball.x + ball.radius, paddleRight.x,3)){
-  console.log('1:', ball.x + ball.radius);
-  console.log('2:', paddleRight.x);
-  // }
-  return (ball.x + ball.radius === paddleRight.x) &&
+  return prettyClose(ball.x + ball.radius,paddleRight.x,COLLISION_MARGIN) &&
     ((paddleRight.y <= ball.y) && ((paddleRight.y + paddleRight.height) >= ball.y))
 }
 
 const ballCollidesPaddleLeft = (ball: Ball, paddleLeft: Paddle) => (
-  (paddleLeft.x + ball.radius === ball.x) &&
+  prettyClose(paddleLeft.x + ball.radius, ball.x,COLLISION_MARGIN) &&
   (paddleRight.y <= ball.y && paddleRight.y + paddleRight.height >= ball.y)
 )
 
-let id = setInterval(() => {
-  const res = ballCollidesPaddleRight(ball, paddleRight);
-  console.log(res);
-  if (res) {
-    console.log('collided with paddle right');
-  }
-}, 1)
 
 window.addEventListener('keydown', (event: KeyboardEvent) => {
   if (event.code === keyCodes.arrowUp) {
@@ -189,20 +184,10 @@ window.addEventListener('keyup', (event: KeyboardEvent) => {
 
 window.addEventListener('keypress', (e: KeyboardEvent) => {
   if (e.code === 'KeyP') {
-    clearInterval(id);
     if (ball.animId) window.cancelAnimationFrame(ball.animId);
     clearBall(ctx, ball);
   }
   if (e.code === 'KeyR') {
-    clearInterval(id);
-
-    id = setInterval(() => {
-      const res = ballCollidesPaddleRight(ball, paddleRight);
-      console.log(res);
-      if (res) {
-        console.log('collided with paddle right');
-      }
-    }, 1)
     clearBall(ctx, ball);
     ball.x = ctx.canvas.width / 2;
     ball.y = ball_default.y;

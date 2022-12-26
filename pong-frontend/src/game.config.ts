@@ -13,5 +13,7 @@ export const ball_default = {
     y:50, 
 }
 
+export const COLLISION_MARGIN = 2;
+
 
 
