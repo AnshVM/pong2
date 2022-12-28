@@ -1,4 +1,8 @@
 import { ball_default, COLLISION_MARGIN, paddle_default } from "./game.config";
+import { initSocket } from "./socket";
+
+
+initSocket();
 
 const canvas: HTMLCanvasElement = document.getElementById('canvas') as HTMLCanvasElement;
 
@@ -24,6 +28,8 @@ type Ball = {
   y: number,
   radius: number,
   animId?: number,
+  xSpeed:number,
+  ySpeed:number,
 }
 
 
@@ -46,6 +52,8 @@ let ball: Ball = {
   x: ctx.canvas.width / 2,
   y: ball_default.y,
   radius: ball_default.radius,
+  xSpeed:ball_default.xSpeed,
+  ySpeed:ball_default.ySpeed,
 }
 
 const clearPaddle = (ctx: CanvasRenderingContext2D, paddle: Paddle) => {
@@ -118,31 +126,52 @@ const drawBall = (ctx: CanvasRenderingContext2D, ball: Ball) => {
   ctx.fill();
 }
 
-const moveBall = (ctx: CanvasRenderingContext2D, ball: Ball, dx: number, dy: number) => {
+const moveBall = (ctx: CanvasRenderingContext2D, ball: Ball) => {
   if (ball.animId) {
     window.cancelAnimationFrame(ball.animId);
     ball.animId = undefined;
   }
   const moveBallAnim = () => {
     if(ballCollidesPaddleRight(ball,paddleRight)){
-      console.log('Collided with right paddle');
+      ball.xSpeed = -ball.xSpeed;
     }
     if(ballCollidesPaddleLeft(ball,paddleLeft)){
-      console.log('Collided with left paddle');
+      ball.xSpeed = -ball.xSpeed;
+    }
+    if(ballCollidesBottom(ctx,ball)){
+      ball.ySpeed = -ball.ySpeed;
+    }
+    if(ballCollidesTop(ball)){
+      ball.ySpeed = -ball.ySpeed;
     }
     clearBall(ctx, { ...ball });
-    ball.x = ball.x + dx;
-    ball.y = ball.y + dy;
+    ball.x = ball.x + ball.xSpeed;
+    ball.y = ball.y + ball.ySpeed;
     drawBall(ctx, ball);
     ball.animId = window.requestAnimationFrame(moveBallAnim);
   }
   ball.animId = window.requestAnimationFrame(moveBallAnim);
 }
 
+
+
+const ballCollidesBottom = (ctx:CanvasRenderingContext2D,ball:Ball) => {
+  return (
+    prettyClose(ball.y + ball.radius,ctx.canvas.height,COLLISION_MARGIN)
+  )
+} 
+
+const ballCollidesTop = (ball:Ball) => {
+  return(
+    prettyClose(0 + ball.radius,ball.y,COLLISION_MARGIN)
+  )
+}
+
+
 drawPaddle(ctx, paddleLeft);
 drawPaddle(ctx, paddleRight);
 drawBall(ctx, ball);
-moveBall(ctx, ball, 3, 3)
+moveBall(ctx, ball)
 
 const prettyClose = (a: number, b: number, d: number) => a - b <= d && a - b >= -d
 
@@ -152,8 +181,8 @@ const ballCollidesPaddleRight = (ball: Ball, paddleRight: Paddle) => {
 }
 
 const ballCollidesPaddleLeft = (ball: Ball, paddleLeft: Paddle) => (
-  prettyClose(paddleLeft.x + ball.radius, ball.x,COLLISION_MARGIN) &&
-  (paddleRight.y <= ball.y && paddleRight.y + paddleRight.height >= ball.y)
+  prettyClose(paddleLeft.x + paddleLeft.width +  ball.radius, ball.x,COLLISION_MARGIN) &&
+  (paddleLeft.y <= ball.y && paddleLeft.y + paddleLeft.height >= ball.y)
 )
 
 
@@ -192,7 +221,7 @@ window.addEventListener('keypress', (e: KeyboardEvent) => {
     ball.x = ctx.canvas.width / 2;
     ball.y = ball_default.y;
     drawBall(ctx, ball);
-    moveBall(ctx, ball, 3, 3);
+    moveBall(ctx, ball);
   }
 })
 
