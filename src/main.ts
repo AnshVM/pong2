@@ -1,8 +1,6 @@
 import { ball_default, COLLISION_MARGIN, paddle_default } from "./game.config";
-import { initSocket } from "./socket";
 
 
-initSocket();
 
 const canvas: HTMLCanvasElement = document.getElementById('canvas') as HTMLCanvasElement;
 
@@ -177,12 +175,12 @@ const prettyClose = (a: number, b: number, d: number) => a - b <= d && a - b >= 
 
 const ballCollidesPaddleRight = (ball: Ball, paddleRight: Paddle) => {
   return prettyClose(ball.x + ball.radius,paddleRight.x,COLLISION_MARGIN) &&
-    ((paddleRight.y <= ball.y) && ((paddleRight.y + paddleRight.height) >= ball.y))
+    ((paddleRight.y <= ball.y + ball.radius) && ((paddleRight.y + paddleRight.height) >= ball.y - ball.radius))
 }
 
 const ballCollidesPaddleLeft = (ball: Ball, paddleLeft: Paddle) => (
   prettyClose(paddleLeft.x + paddleLeft.width +  ball.radius, ball.x,COLLISION_MARGIN) &&
-  (paddleLeft.y <= ball.y && paddleLeft.y + paddleLeft.height >= ball.y)
+  (paddleLeft.y <= ball.y + ball.radius && paddleLeft.y + paddleLeft.height >= ball.y - ball.radius)
 )
 
 

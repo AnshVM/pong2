@@ -15,7 +15,7 @@ export const ball_default = {
     ySpeed:3
 }
 
-export const COLLISION_MARGIN = 2;
+export const COLLISION_MARGIN = 5;
 
 
 
