@@ -17,5 +17,8 @@ export const ball_default = {
 
 export const COLLISION_MARGIN = 5;
 
-
+export const COLORS = {
+    BG:'#01052b',
+    PADDLE_AND_BALL :'#d2d2d6',
+}
 
