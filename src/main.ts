@@ -1,46 +1,16 @@
-import { Ball, clearBall, drawBall, moveBall } from "./ball";
-import { ball_default, COLORS, paddle_default } from "./game.config";
+import { Ball, clearBall, createBall, drawBall, moveBall } from "./ball";
+import { getCanvasContext } from "./canvas";
+import { ball_default, keyCodes } from "./game.config";
 import * as paddle from './paddle';
 
+let ctx = getCanvasContext();
 
-const canvas: HTMLCanvasElement = document.getElementById('canvas') as HTMLCanvasElement;
-
-const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
-
-ctx.canvas.height = window.innerHeight;
-ctx.canvas.width = window.innerWidth;
-ctx.fillStyle = COLORS.PADDLE_AND_BALL;
+let paddleLeft: paddle.Paddle = paddle.createPaddleLeft(ctx);
+let paddleRight: paddle.Paddle = paddle.createPaddleRight(ctx);
 
 
-let paddleLeft: paddle.Paddle = {
-  x: paddle_default.x,
-  y: paddle_default.y,
-  height: paddle_default.height,
-  width: paddle_default.width,
-}
+let ball:Ball = createBall(ctx);
 
-let paddleRight: paddle.Paddle = {
-  x: ctx.canvas.width - paddle_default.x - paddle_default.width,
-  y: paddle_default.y,
-  width: paddle_default.width,
-  height: paddle_default.height,
-}
-
-let ball:Ball  = {
-  x: ctx.canvas.width / 2,
-  y: ball_default.y,
-  radius: ball_default.radius,
-  xSpeed:ball_default.xSpeed,
-  ySpeed:ball_default.ySpeed,
-}
-
-
-const keyCodes = {
-  arrowUp: 'ArrowUp',
-  arrowDown: 'ArrowDown',
-  w: 'KeyW',
-  s: 'KeyS',
-}
 
 paddle.drawPaddle(ctx, paddleLeft);
 paddle.drawPaddle(ctx, paddleRight);

@@ -1,15 +1,26 @@
 import { COLORS } from "./game.config";
 import * as collisions from './collisions';
 import { Paddle } from "./paddle";
+import { ball_default } from "./game.config";
 
 export type Ball = {
   x: number,
   y: number,
   radius: number,
   animId?: number,
-  xSpeed:number,
-  ySpeed:number,
+  xSpeed: number,
+  ySpeed: number,
 }
+
+export const createBall = (ctx:CanvasRenderingContext2D): Ball => (
+  {
+    x: ctx.canvas.width / 2,
+    y: ball_default.y,
+    radius: ball_default.radius,
+    xSpeed: ball_default.xSpeed,
+    ySpeed: ball_default.ySpeed,
+  }
+)
 
 
 export const clearBall = (ctx: CanvasRenderingContext2D, ball: Ball) => {
@@ -28,22 +39,22 @@ export const drawBall = (ctx: CanvasRenderingContext2D, ball: Ball) => {
   ctx.fill();
 }
 
-export const moveBall = (ctx: CanvasRenderingContext2D, ball: Ball, paddleLeft:Paddle, paddleRight:Paddle) => {
+export const moveBall = (ctx: CanvasRenderingContext2D, ball: Ball, paddleLeft: Paddle, paddleRight: Paddle) => {
   if (ball.animId) {
     window.cancelAnimationFrame(ball.animId);
     ball.animId = undefined;
   }
   const moveBallAnim = () => {
-    if(collisions.ballCollidesPaddleRight(ball,paddleRight)){
+    if (collisions.ballCollidesPaddleRight(ball, paddleRight)) {
       ball.xSpeed = -ball.xSpeed;
     }
-    if(collisions.ballCollidesPaddleLeft(ball,paddleLeft)){
+    if (collisions.ballCollidesPaddleLeft(ball, paddleLeft)) {
       ball.xSpeed = -ball.xSpeed;
     }
-    if(collisions.ballCollidesBottom(ctx,ball)){
+    if (collisions.ballCollidesBottom(ctx, ball)) {
       ball.ySpeed = -ball.ySpeed;
     }
-    if(collisions.ballCollidesTop(ball)){
+    if (collisions.ballCollidesTop(ball)) {
       ball.ySpeed = -ball.ySpeed;
     }
     clearBall(ctx, { ...ball });

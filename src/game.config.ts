@@ -22,3 +22,20 @@ export const COLORS = {
     PADDLE_AND_BALL :'#d2d2d6',
 }
 
+export const keyCodes = {
+  arrowUp: 'ArrowUp',
+  arrowDown: 'ArrowDown',
+  w: 'KeyW',
+  s: 'KeyS',
+}
+
+export const controls = {
+    "RIGHT":{
+        "UP":keyCodes.w,
+        "DOWN":keyCodes.s,
+    },
+    "LEFT":{
+        "UP":keyCodes.arrowUp,
+        "DOWN":keyCodes.arrowDown,
+    }
+}

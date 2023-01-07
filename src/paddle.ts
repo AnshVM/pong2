@@ -8,6 +8,24 @@ export type Paddle = {
   animId?: number,
 }
 
+export const createPaddleRight = (ctx: CanvasRenderingContext2D): Paddle => (
+  {
+    x: ctx.canvas.width - paddle_default.x - paddle_default.width,
+    y: paddle_default.y,
+    width: paddle_default.width,
+    height: paddle_default.height,
+  }
+)
+
+export const createPaddleLeft = (ctx: CanvasRenderingContext2D): Paddle => (
+  {
+    x: paddle_default.x,
+    y: paddle_default.y,
+    height: paddle_default.height,
+    width: paddle_default.width,
+  }
+)
+
 export const clearPaddle = (ctx: CanvasRenderingContext2D, paddle: Paddle) => {
   ctx.clearRect(paddle.x, paddle.y - paddle.width / 2 - 2, paddle.width, paddle.height + paddle.width + 2);
 }
