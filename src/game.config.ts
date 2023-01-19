@@ -11,8 +11,8 @@ export const ball_default = {
     color:'#e1e3f5',
     radius:8,
     y:50, 
-    xSpeed:6,
-    ySpeed:3
+    xSpeed:2,
+    ySpeed:2
 }
 
 export const COLLISION_MARGIN = 5;

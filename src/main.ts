@@ -27,6 +27,7 @@ window.addEventListener('keydown', (event: KeyboardEvent) => {
     paddle.movePaddleDown(ctx, paddleRight);
   }
   if (event.code === keyCodes.s) {
+    console.log(paddleLeft);
     paddle.movePaddleDown(ctx, paddleLeft);
   }
   if (event.code === keyCodes.w) {
