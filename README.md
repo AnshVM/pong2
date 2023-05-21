@@ -1,5 +1,7 @@
-#Pong
-Play the classic pong game online or offline
+# Pong 
+
+Play the classic pong game online or offline 
+
 Checkout the [backend repo](https://github.com/AnshVM/pong-backend)
 
 ### Local setup
